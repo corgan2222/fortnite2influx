@@ -52,13 +52,17 @@ except configparser.ParsingError:
 
 
 data_api_lt = {}
+
 data_api_lt_solo = {}
 data_api_lt_duo = {}
 data_api_lt_squad = {}
+
 data_api_lt_ltm = {}
+
 data_api_s_solo = {}
 data_api_s_duo = {}
 data_api_s_squad = {}
+
 data_api_s_ltm = {}
 
 def parse_data_lifetime(data):
@@ -204,7 +208,7 @@ def parse_data_lifetime_ltm(data):
         data_api_lt_ltm['name'] = data['epicUserHandle']
         data_api_lt_ltm['accountId'] = data['accountId']
         data_api_lt_ltm['mode'] = 'Lifetime'
-        data_api_lt_ltm['group'] = 'Ltm'
+        data_api_lt_ltm['group'] = 'ltm'
 
         data_api_lt_ltm['wins'] = int(data['stats']['ltm']['top1']['value'])
         data_api_lt_ltm['placetop1'] = int(data['stats']['ltm']['top1']['value'])
@@ -226,7 +230,7 @@ def parse_data_lifetime_ltm(data):
         data_api_lt_ltm['scorePerMin'] = float(data['stats']['ltm']['scorePerMin']['value'])
     except KeyError:
         pass
-    return data_api_lt_ltm
+    return data_api_lt_squad
 
 
 def parse_data_season_solo(data):
@@ -328,32 +332,32 @@ def parse_data_season_squad(data):
 
 def parse_data_season_ltm(data):
     try:
-        data_api_s_ltm['platformId'] = data['platformId']
-        data_api_s_ltm['platformName'] = data['platformName']
-        data_api_s_ltm['platformNameLong'] = data['platformNameLong']        
-        data_api_s_ltm['name'] = data['epicUserHandle']
-        data_api_s_ltm['accountId'] = data['accountId']
-        data_api_s_ltm['mode'] = 'Season_' + str(season)
-        data_api_s_ltm['group'] = 'Ltm'
+        data_api_s_squad['platformId'] = data['platformId']
+        data_api_s_squad['platformName'] = data['platformName']
+        data_api_s_squad['platformNameLong'] = data['platformNameLong']        
+        data_api_s_squad['name'] = data['epicUserHandle']
+        data_api_s_squad['accountId'] = data['accountId']
+        data_api_s_squad['mode'] = 'Season_' + str(season)
+        data_api_s_squad['group'] = 'Ltm'
 
-        data_api_s_ltm["wins"] = int(data['stats']['curr_ltm']['top1']['value'])
-        data_api_s_ltm["placetop1"] = int(data['stats']['curr_ltm']['top1']['value'])
-        data_api_s_ltm["placetop3"] = int(data['stats']['curr_ltm']['top3']['value'])
-        data_api_s_ltm["placetop5"] = int(data['stats']['curr_ltm']['top5']['value'])
-        data_api_s_ltm["placetop6"] = int(data['stats']['curr_ltm']['top6']['value'])
-        data_api_s_ltm["placetop10"] = int(data['stats']['curr_ltm']['top10']['value'])
-        data_api_s_ltm["placetop12"] = int(data['stats']['curr_ltm']['top12']['value'])
-        data_api_s_ltm["placetop25"] = int(data['stats']['curr_ltm']['top25']['value'])
-        data_api_s_ltm["kd"] = float(data['stats']['curr_ltm']['kd']['value'])
-        data_api_s_ltm["winrate"] = float(data['stats']['curr_ltm']['winRatio']['value'])
-        data_api_s_ltm["kills"] = int(data['stats']['curr_ltm']['kills']['value'])
-        data_api_s_ltm["matchesplayed"] = int(data['stats']['curr_ltm']['matches']['value'])
-        data_api_s_ltm["minutesplayed"] = int(data['stats']['curr_ltm']['minutesPlayed']['value'])
-        data_api_s_ltm["score"] = float(data['stats']['curr_ltm']['score']['value'])
-        data_api_s_ltm["kpm"] = float(data['stats']['curr_ltm']['kpm']['value'])
-        data_api_s_ltm["kpg"] = float(data['stats']['curr_ltm']['kpg']['value'])
-        data_api_s_ltm["scorePerMatch"] = float(data['stats']['curr_ltm']['scorePerMatch']['value'])
-        data_api_s_ltm["scorePerMin"] = float(data['stats']['curr_ltm']['scorePerMin']['value'])
+        data_api_s_squad["wins"] = int(data['stats']['curr_ltm']['top1']['value'])
+        data_api_s_squad["placetop1"] = int(data['stats']['curr_ltm']['top1']['value'])
+        data_api_s_squad["placetop3"] = int(data['stats']['curr_ltm']['top3']['value'])
+        data_api_s_squad["placetop5"] = int(data['stats']['curr_ltm']['top5']['value'])
+        data_api_s_squad["placetop6"] = int(data['stats']['curr_ltm']['top6']['value'])
+        data_api_s_squad["placetop10"] = int(data['stats']['curr_ltm']['top10']['value'])
+        data_api_s_squad["placetop12"] = int(data['stats']['curr_ltm']['top12']['value'])
+        data_api_s_squad["placetop25"] = int(data['stats']['curr_ltm']['top25']['value'])
+        data_api_s_squad["kd"] = float(data['stats']['curr_ltm']['kd']['value'])
+        data_api_s_squad["winrate"] = float(data['stats']['curr_ltm']['winRatio']['value'])
+        data_api_s_squad["kills"] = int(data['stats']['curr_ltm']['kills']['value'])
+        data_api_s_squad["matchesplayed"] = int(data['stats']['curr_ltm']['matches']['value'])
+        data_api_s_squad["minutesplayed"] = int(data['stats']['curr_ltm']['minutesPlayed']['value'])
+        data_api_s_squad["score"] = float(data['stats']['curr_ltm']['score']['value'])
+        data_api_s_squad["kpm"] = float(data['stats']['curr_ltm']['kpm']['value'])
+        data_api_s_squad["kpg"] = float(data['stats']['curr_ltm']['kpg']['value'])
+        data_api_s_squad["scorePerMatch"] = float(data['stats']['curr_ltm']['scorePerMatch']['value'])
+        data_api_s_squad["scorePerMin"] = float(data['stats']['curr_ltm']['scorePerMin']['value'])
     except KeyError:
         pass
     return data_api_s_ltm

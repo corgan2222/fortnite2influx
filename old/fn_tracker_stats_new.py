@@ -367,7 +367,7 @@ with open(csv_file, newline='') as csvfile:
     for row in reader:
        
         fortnitetracker_url_per_player = config['fortnitetracker_url'] + "/" + str(row['plattform']) + "/" + str(row['player_name']                )      
-
+        print(fortnitetracker_url_per_player) 
         response = requests.get(fortnitetracker_url_per_player,
                         headers = {'TRN-Api-Key': config['fortnitetracker_API_TOKEN']},
                         params={'account': row['acct_id'],
