@@ -10,6 +10,7 @@ import configparser
 import argparse
 import logging
 
+
 logging.basicConfig()
 LOGGER = logging.getLogger('fortnite2influx')
 LOGGER.setLevel(logging.INFO)
@@ -52,66 +53,55 @@ except configparser.ParsingError:
 
 
 data_api = {}
+
+def parse_data(data):
+    try:        
+        data_api['id'] = data['id']
+        data_api['dateCollected'] = data['dateCollected']
+        data_api['accountId'] = data['accountId']
+        data_api['kills'] = data['kills']
+        data_api['matches'] = data['matches']
+        data_api['playlist'] = data['playlist']
+        data_api['score'] = data['score']
+        data_api['top1'] = data['top1']
+        data_api['top10'] = data['top10']
+        data_api['top12'] = data['top12']
+        data_api['top25'] = data['top25']
+        data_api['top3'] = data['top3']
+        data_api['top5'] = data['top5']
+        data_api['top6'] = data['top6']
+        data_api['trnRating'] = data['trnRating']
+
+    except KeyError:
+        pass
+
+    return data_api
+
+
 data_api_list = []
 
-csv_file = os.path.dirname(os.path.abspath(__file__)) + '/players.csv'
-with open(csv_file, newline='') as csvfile:
+with open('players.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
        
-        fortnitetracker_url_per_player = config['fortnitetracker_url'] + "/" + str(row['plattform']) + "/" + str(row['player_name']                )      
-        #fortnitetracker_url_per_player = config['fortnitetracker_url'] + "/account/" + str(row['acct_id']) + "/matches"              
-        
-        try:
-            response = requests.get(fortnitetracker_url_per_player,
-                            headers = {'TRN-Api-Key': config['fortnitetracker_API_TOKEN']},
-                            params={'account': row['acct_id'],'season': config['season']}
-                            )
-        except:
-            exit('could not load page, check connection')                            
-        
-        try:
-            jsonObject_matches = json.loads(response.text) 
-        except:
-            exit('No Data for ' + str(row['player_name']) + "try command: curl --request GET '"  + str(row['player_name']) + "' --header 'TRN-Api-Key: " + str(row['fortnitetracker_API_TOKEN']) + "' ")                            
+        fortnitetracker_url_per_player = config['fortnitetracker_url'] + "/account/" + str(row['acct_id']) + '/matches'   
+        print(fortnitetracker_url_per_player)   
 
-        data_api = {}
-        data_api['accountId'] = row['acct_id']
-        data_api['name'] = row['player_name']
-        data_api['mode'] = 'Season_' + str(season)
-        data_api['season'] = int(season)
-        data_api['platformName'] = str(row['plattform'])
+        response = requests.get(fortnitetracker_url_per_player,headers = {'TRN-Api-Key': config['fortnitetracker_API_TOKEN']})
+                        # params={'account': row['acct_id'],
+                        #         'season': config['season']
+                        #         }
+                        # )
+        data = response.json()
+        print(data)
+        data_api_dict = parse_data(data)
+        data_api_dict['pro'] = row['pro']
+        data_api_dict['account'] = row['acct_id']
+        data_api_dict['player_name'] = row['player_name']
+        data_api_list.append(data_api_dict.copy())
+
         
-        try:
-            for data in jsonObject_matches['recentMatches']:
-                try:        
-                    data_api['id'] = data['id']            
-                    data_api['playlist'] = data['playlist']    
-                    data_api['group'] = data['playlist']    
-                    data_api['kills'] = data['kills'] 
-                    data_api['minutesPlayed'] = data['minutesPlayed']
-                    data_api['score'] = data['score']
-                    data_api['top1'] = data['top1']
-                    data_api['top3'] = data['top3']
-                    data_api['top5'] = data['top5']
-                    data_api['top6'] = data['top5']
-                    data_api['top10'] = data['top10']
-                    data_api['top12'] = data['top12']
-                    data_api['top25'] = data['top25']
-                    data_api['matches'] = data['matches']
-                    data_api['dateCollected'] = data['dateCollected']
-                    #data_api['trnRating'] = data['trnRating']
-                    data_api['score'] = data['score']
-                    data_api['platformId'] = data['platform']
-                    data_api['playlistId'] = data['playlistId']
-                    data_api['playersOutlived'] = data['playersOutlived']
-                    data_api_list.append(data_api.copy())
-                except KeyError:
-                    pass
-        except KeyError:
-            pass
-                    
-               
+
 api_output = json.dumps(data_api_list)
 print(api_output)
 
